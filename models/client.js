@@ -8,20 +8,21 @@ const clientSchema = buildSchema(`
   },
 
   type Client {
-    id: Oid
+    id: ID
     first_name: String
     last_name: String
     email: String
     gender: String
     photo: String
     origin: String
-  },
-
-  type Oid {
-    oid: ID
   }
 `);
 
 const clientsData = JSON.parse(fs.readFileSync('clients.json'));
+
+// Parse Clients Data - replace id value with $old's value
+clientsData.forEach(item => {
+  item.id = item.id['$oid'];
+});
 
 module.exports = { clientSchema, clientsData };
