@@ -6,33 +6,52 @@ module.exports = {
     all(args) {
       let data = clientsData;
 
-      data = data.filter(client => {
-        let { first_name, last_name, origin } = client;
-        
-        fullName = (first_name || '').toLowerCase() + (last_name || '').toLowerCase();
-        origin = (origin || '').toLowerCase();
+      if (args.name && args.origin) {
+        data = data.filter(client => {
+          const {fullName, origin} = selectFields(client);
 
-        if (args.name && args.origin) {
-          return (fullName == args.name.toLowerCase()) && (origin == args.origin.toLowerCase())
-        }
+          return (fullName == args.name.toLowerCase()) && (origin == args.origin.toLowerCase());
+        });
+      }
 
-        if (args.name) {
+      if (args.name) {
+        data = data.filter(client => {
+          const { fullName } = selectFields(client);
+
           return fullName == args.name.toLowerCase();
-        }
+        });
+      }
 
-        if (args.origin) {
+      if (args.origin) {
+        data = data.filter(client => {
+          const { origin } = selectFields(client);
+
           return origin == args.origin.toLowerCase();
-        }
-
-        return true;
-      });
+        });
+      }
 
       return paginateData(data, args.cursor, args.limit);
     }
   }
 }
 
+const selectFields = (client) => {
+  let { first_name, last_name, origin } = client;
+        
+  fullName = `${(first_name || '').toLowerCase()} ${(last_name || '').toLowerCase()}`;
+  origin = (origin || '').toLowerCase();
+
+  return {fullName, origin};
+}
+
 const paginateData = (data, cursor = 0, limit = 10) => {
+  if (data.length == 0) {
+    return {
+      edges: [],
+      pageInfo: {}
+    };
+  }
+
   const lastIndex = data.findIndex(element => {
     return element.id == cursor
   });
