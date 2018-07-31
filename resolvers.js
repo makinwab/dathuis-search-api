@@ -1,5 +1,5 @@
 const { clientsData } = require('./models/client');
-const totalClients = clientsData.length;
+const totalCount = clientsData.length;
 
 module.exports = {
   Clients: {
@@ -27,23 +27,28 @@ module.exports = {
         return true;
       });
 
-      return paginateData(data, args.endCursor, args.limit);
+      return paginateData(data, args.cursor, args.limit);
     }
   }
 }
 
-const paginateData = (data, endCursor = 0, limit = 10) => {
+const paginateData = (data, cursor = 0, limit = 10) => {
   const lastIndex = data.findIndex(element => {
-    return element.id == endCursor
+    return element.id == cursor
   });
 
   const paginatedData = data.slice(lastIndex + 1, lastIndex + limit + 1);
+  cursor = paginatedData[paginatedData.length - 1].id;
+  const endCursor = data.slice(-1)[0].id;
 
   return {
     edges: paginatedData,
     pageInfo: {
-      size: totalClients,
-      endCursor: paginatedData[paginatedData.length - 1].id,
+      hasNextPage: cursor != endCursor,
+      endCursor,
+      size: paginatedData.length,
+      totalCount,
+      cursor,
       limit
     }
   };

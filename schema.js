@@ -2,7 +2,7 @@ const { buildSchema } = require('graphql');
 
 const clientSchema = buildSchema(`
   type Query {
-    clients(name: String, origin: String, limit: Int, endCursor: ID): PaginatedClient
+    clients(name: String, origin: String, limit: Int, cursor: ID, endCursor: ID): PaginatedClient
   },
 
   type PaginatedClient {
@@ -22,8 +22,11 @@ const clientSchema = buildSchema(`
 
   type PageInfo {
     endCursor: ID
+    cursor: ID
     limit: Int
     size: Int
+    hasNextPage: Boolean
+    totalCount: Int
   }
 `);
 
