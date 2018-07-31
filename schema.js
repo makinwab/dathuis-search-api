@@ -6,7 +6,7 @@ const clientSchema = buildSchema(`
   },
 
   type PaginatedClient {
-    edge: [Client]
+    edges: [Client]
     pageInfo: PageInfo
   },
 

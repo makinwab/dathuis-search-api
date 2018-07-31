@@ -11,7 +11,9 @@ const root = {
 
 const app = express();
 
-app.use('/graphql', cors(), express_graphql({
+app.use(cors());
+
+app.use('/graphql', express_graphql({
   schema: clientSchema,
   rootValue: root,
   graphiql: true,
