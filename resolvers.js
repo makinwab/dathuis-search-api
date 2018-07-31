@@ -1,9 +1,12 @@
 const { clientsData } = require('./models/client');
+const totalClients = clientsData.length;
 
 module.exports = {
   Clients: {
     all(args) {
-      clientsData.filter(client => {
+      let data = clientsData;
+
+      data = data.filter(client => {
         let { first_name, last_name, origin } = client;
         
         fullName = (first_name || '').toLowerCase() + (last_name || '').toLowerCase();
@@ -20,9 +23,11 @@ module.exports = {
         if (args.origin) {
           return origin == args.origin.toLowerCase();
         }
+
+        return true;
       });
 
-      return paginateData(clientsData, args.endCursor, args.limit);
+      return paginateData(data, args.endCursor, args.limit);
     }
   }
 }
@@ -37,7 +42,7 @@ const paginateData = (data, endCursor = 0, limit = 10) => {
   return {
     edges: paginatedData,
     pageInfo: {
-      size: paginatedData.length,
+      size: totalClients,
       endCursor: paginatedData[paginatedData.length - 1].id,
       limit
     }
