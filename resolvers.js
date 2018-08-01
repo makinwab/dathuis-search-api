@@ -6,27 +6,12 @@ module.exports = {
     all(args) {
       let data = clientsData;
 
-      if (args.name && args.origin) {
+      if (args.searchTerm) {
         data = data.filter(client => {
-          const {fullName, origin} = selectFields(client);
+          const {fullName, origin} = searchableFields(client);
+          const regex = new RegExp(args.searchTerm, 'gi');
 
-          return (fullName == args.name.toLowerCase()) && (origin == args.origin.toLowerCase());
-        });
-      }
-
-      if (args.name) {
-        data = data.filter(client => {
-          const { fullName } = selectFields(client);
-
-          return fullName == args.name.toLowerCase();
-        });
-      }
-
-      if (args.origin) {
-        data = data.filter(client => {
-          const { origin } = selectFields(client);
-
-          return origin == args.origin.toLowerCase();
+          return (fullName.search(regex) == 0) || (origin.search(regex) == 0);
         });
       }
 
@@ -35,11 +20,12 @@ module.exports = {
   }
 }
 
-const selectFields = (client) => {
+// Get fields/values to be searched
+const searchableFields = (client) => {
   let { first_name, last_name, origin } = client;
         
-  fullName = `${(first_name || '').toLowerCase()} ${(last_name || '').toLowerCase()}`;
-  origin = (origin || '').toLowerCase();
+  fullName = `${(first_name || '')} ${(last_name || '')}`;
+  origin = origin || '';
 
   return {fullName, origin};
 }
