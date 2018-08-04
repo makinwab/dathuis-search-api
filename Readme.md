@@ -1,25 +1,19 @@
-# Build a search ( -as-you-type ) feature.
+# Search ( -as-you-type ) API.
 
-Consider you have a database with a massive number of entries ( 100million+ ) from which you got a tiny portion in `clients.json`. Build a web-app which provides search functionality for the data.
+Mininal search API for clients. Built using NodeJS and Graphql.
 
-A user would want to search for the first + last name and/or the country of origin.
+## Features & Implementations:
 
-## Requirements:
+- Graphql communication with frontend
+- Pagination (max no. of records is 10)
 
-- The front end must get the data via Graphql from the backend.
-- A user sees max 10 items at a given time.
-- Use node.js + react.
-- Have it "search as you type".
-- The css needs to be responsive and work at a minimum in IE11.
-- Test your (react) components with jest.
-- See this app as the foundation of a much larger project with a lot more features to come.
+## Uage
 
-## Bonus
+- Clone this repo and cd into cloned project
+- Install `node`
+- Install dependencies by running `npm install`
+- Start the API server by running `node server` in your terminal
 
-- Autocomplete
-- Flowtype
-- Whatever else you can dream up.
-
-In general, use as little external libraries you deem neccessary.
-
-For Philipp: Make a plan, where are potential issues, how long will it take to create this?
+## Limitations
+- Flowtype not adopted yet
+- No tests
